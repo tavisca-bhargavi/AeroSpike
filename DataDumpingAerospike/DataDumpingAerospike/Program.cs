@@ -25,6 +25,8 @@ namespace DataDumpingAerospike
             {
                 if (rowcount == 2000)
                     break;
+                string[] keys = data.url.Split('/');
+                data.id = keys[5];
                 var key = new Key(nameSpace, setName, data.id);
                 rowcount++;
                 aerospikeClient.Put(new WritePolicy(), key, 
