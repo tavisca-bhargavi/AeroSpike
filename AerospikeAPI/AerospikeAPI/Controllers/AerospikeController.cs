@@ -10,11 +10,12 @@ namespace AerospikeAPI.Controllers
 {
     public class AerospikeController : ApiController
     {
+        AerospikeClient aerospikeClient = new AerospikeClient("18.235.70.103", 3000);
+        string nameSpace = "AirEngine";
+        string setName = "Bhargavi";
         public List<Record> GetAllData([FromUri]string [] tweetIds)
         {
-            var aerospikeClient = new AerospikeClient("18.235.70.103", 3000);
-            string nameSpace = "AirEngine";
-            string setName = "Bhargavi";
+            
             List<Record> output = new List<Record>();
             foreach (var id in tweetIds)
             {
@@ -23,7 +24,19 @@ namespace AerospikeAPI.Controllers
               output.Add(tweetById);
             }
             return output;
+        }
+        public void UpdateRecord([FromBody]List<string> DataToBeUpdated)
+        {
 
+            string tweetId = DataToBeUpdated[0];
+            string colName = DataToBeUpdated[1];
+            string newColValue = DataToBeUpdated[2];
+            aerospikeClient.Put(new WritePolicy(), new Key(nameSpace, setName, tweetId), new Bin[] { new Bin(colName, newColValue) });
+
+        }
+        public void DeleteRecord([FromBody]long tweetId)
+        {
+            aerospikeClient.Delete(new WritePolicy(), new Key(nameSpace, setName, tweetId));
         }
     }
 }
