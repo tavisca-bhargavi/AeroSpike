@@ -25,7 +25,7 @@ namespace AerospikeAPI.Controllers
             }
             return output;
         }
-        public void UpdateRecord([FromBody]List<string> DataToBeUpdated)
+        public void PutRecord([FromBody]List<string> DataToBeUpdated)
         {
 
             string tweetId = DataToBeUpdated[0];
